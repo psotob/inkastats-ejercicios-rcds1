@@ -1,0 +1,351 @@
+---
+title: "R para Ciencia de Datos en Salud 1: Fundamentos"
+subtitle: "Ejercicios - Sesión 01"
+author: "InkaStats Data Science Solutions <br> Medical branch"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: "Sesión 1"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# if (!require("pacman")) {
+#   install.packages("pacman")
+#   library(pacman)
+# }
+# pacman::p_unload("all") # Unloading all package except base
+
+# pacman::p_load(
+#   learnr, 
+#   tidyverse, 
+#   dslabs) # Loading packages
+
+# if (!require("gradethis")) {
+#   remotes::install_github("rstudio/gradethis")
+# }
+library(devtools)
+library(usethis)
+library(roxygen2)
+library(learnr)
+# library(gradethis)
+library(tidyverse)
+library(gradethis)
+library(dslabs)
+data(gapminder, package = "dslabs")
+
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+```
+
+## **Primera sección**
+
+<div class=text-justify>
+Para los siguientes ejercicios propuestos, usaremos la base de datos <code>gapminder</code>, cortesía de la [Fundación Gapminder](https://www.gapminder.org/). <br>
+Pd: No necesitan instalar o cargar nada, la data viene incorporada en esta prueba.
+</div>
+
+Recomendación: Antes de iniciar, por favor explore la data para familiarizarse con ella.
+
+### Ejercicio 1
+
+<div class=text-justify>
+Cree un gráfico de puntos que muestre cómo la mortalidad infantil ha cambiado a través del tiempo.
+</div>
+
+```{r p1, exercise=TRUE}
+
+
+```
+
+
+```{r p1-check}
+gradethis::grade_result(
+  pass_if(~ identical(unlist(.result), 
+                      unlist(gapminder %>% ggplot() + aes(x = year, y = infant_mortality) + geom_point())), 
+          'Muy bien!')
+)
+```
+
+### Ejercicio 2
+
+<div class=text-justify>
+Cree un gráfico de puntos que muestre cómo la esperanza de vida ha cambiado a través del tiempo y que cada continente tenga un color distinto.
+</div>
+
+```{r p2, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p2-hint}
+"Recuerde trabajar en capas"
+```
+
+```{r p2-solution}
+gapminder %>% 
+  ggplot() +
+    aes(x = year, y = life_expectancy, color=continent) +         
+    geom_point()
+```
+
+```{r p2-check}
+grade_code()
+```
+
+### Ejercicio 3
+
+<div class=text-justify>
+Cree un gráfico de puntos que muestre cómo la esperanza de vida ha cambiado a través del tiempo y que cada continente tenga un color distinto. Además que *x* tenga la etiqueta "Años", *y* tenga la etiqueta "Esperanza de vida" y el título sea "Esperanza de vida en el tiempo". Por último, que la leyenda tenga el nombre de "Continentes".
+</div>
+
+```{r p3, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p3-hint}
+"use la función scale_color_discrete() para nombrar a la leyenda"
+```
+
+```{r p3-solution}
+gapminder %>% 
+  ggplot() +
+  aes(x = year, y = life_expectancy, color=continent) +           
+  geom_point() +
+  xlab("Años") +
+  ylab("Esperanza de vida") +
+  ggtitle("Esperanza de vida en el tiempo") +
+  scale_color_discrete(name = "Continentes")
+```
+
+```{r p3-check}
+grade_code()
+```
+
+### Ejercicio 4
+
+<div class=text-justify>
+Filtre todos los datos de **Perú** y seleccione la columna *país*, *año*, *mortalidad infantil* y *población* (en ese orden).
+</div>
+
+```{r p4, exercise=TRUE, exercise.lines = 10}
+
+```
+
+```{r p4-hint}
+"Primero filtramos y luego seleccionamos"
+```
+
+```{r p4-solution}
+gapminder %>% 
+  filter(country == "Peru") %>% 
+  select(country, year, infant_mortality, population)
+```
+
+```{r p4-check}
+grade_code()
+```
+
+### Ejercicio 5
+
+<div class=text-justify>
+Ahora queremos conocer la mortalidad infantil y la población de **Perú** pero solo del año 2015, ¿cómo sería el código?
+</div>
+
+```{r p5, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p5-hint}
+"Reutilice la respuesta de la pregunta 6 y modifíquela"
+```
+
+```{r p5-solution}
+gapminder %>% 
+  filter(country == "Peru" & year == 2015) %>% 
+  select(country, year, infant_mortality, population)
+```
+
+```{r p5-check}
+grade_code()
+```
+
+## **Segunda sección**
+
+### Ejercicio 6
+
+<div class=text-justify>
+Cree un gráfico de dispersión con datos del **año 1990** de las variables <code>fertility</code> y   <code>life_expectancy</code>.
+</div>
+
+```{r p6, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p6-hint}
+"Primero filtramos y luego creamos el gráfico"
+```
+
+```{r p6-solution}
+gapminder %>% 
+  filter(year == 1990) %>% 
+  ggplot() +
+  aes(x = fertility, y = life_expectancy) +
+  geom_point()
+```
+
+```{r p6-check}
+grade_code()
+```
+
+### Ejercicio 7
+
+<div class=text-justify>
+Con el mismo gráfico de la **pregunta 6**, ahora queremos diferenciar los continentes agregándoles un color distinto a cada uno, ¿cómo lo hacemos con código?
+</div>
+
+```{r p7, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p7-hint}
+"¿dónde iría el parámetro «color=»?
+```
+
+```{r p7-solution}
+gapminder %>% 
+  filter(year == 1990) %>% 
+  ggplot() +
+  aes(x = fertility, y = life_expectancy, color = continent) +
+  geom_point()
+```
+
+```{r p7-check}
+grade_code()
+```
+
+### Ejercicio 8
+
+<div class=text-justify>
+Cree un gráfico de puntos que cruce las variables <code>fertility</code>(eje x) y <code>life_Exp</code>(eje y) solo del continente americano. Además, que cada region del continente tenga un color distinto.
+</div>
+
+```{r p8, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p8-hint}
+"use la función filter()"
+```
+
+```{r p8-solution}
+gapminder %>% 
+  filter(continent == "Americas") %>% 
+  ggplot() +
+  aes(x = fertility, y = life_expectancy, color = region) +
+  geom_point()
+```
+
+```{r p8-check}
+grade_code()
+```
+
+### Ejercicio 9
+
+<div class=text-justify>
+Reporte la información de los 10 primeros años registrados sobre población y mortalidad infantil en **Perú** ordenado de manera descendente.
+</div>
+
+```{r p9, exercise=TRUE, exercise.lines = 10}
+
+
+```
+
+```{r p9-hint}
+"Primero filtramos, luego seleccionamos"
+```
+
+```{r p9-solution}
+gapminder %>% 
+  filter(country == "Peru") %>%
+  select(year, population, infant_mortality) %>%
+  arrange(desc(population)) %>% 
+  head(10)
+```
+
+```{r p9-check}
+grade_code()
+```
+
+### Ejercicio 10
+
+<div class=text-justify>
+Reporte mediante un gráfico lineal, y con el tema gray, la información de la **pregunta 9** con *años* en el eje x y *población* en el eje y. Además que tenga como título "Población peruana por año".
+</div>
+
+```{r p10, exercise=TRUE, exercise.lines = 15}
+
+
+```
+
+```{r p10-hint}
+"Reutilice el código de la pregunta 9 y agrégele las propiedades de ggplot que sean necesarias"
+```
+
+```{r p10-solution}
+gapminder %>% 
+  filter(country == "Peru") %>%
+  select(year, population, infant_mortality) %>%
+  arrange(desc(population)) %>% 
+  head(10) %>% 
+  ggplot() +
+  aes(x = year, y = population) +
+  geom_line() +
+  theme_dark() +
+  ggtitle("Población peruana por año")
+```
+
+```{r p10-check}
+grade_code()
+```
+
+## **¡Reto de la semana!**
+
+<div class=text-justify>
+Cree un gráfico de puntos que solo incluya datos del **año 2000** donde el eje x represente fertilidad y el eje y esperanza de vida y que tenga las siguienes características: (1) Que cada continente tenga un color distinto, (2) Que los puntos tenga un tamaño de 2, (3) Que tenga el tema "bw", (4) Que el título sea "Fertilidad y esperanza de vida por continente durante el año 2000", (5) Que el eje x se llame "Fertilidad", (6) Que el eje y se llame "Esperanza de vida" y (7) Que la leyenda de colores se llame "Continentes".
+Preséntelo como grillas donde los continentes estén en x y el año en y.
+</div>
+
+```{r p11, exercise=TRUE, exercise.lines = 15}
+
+
+```
+
+```{r p11-hint}
+"use pipe, filter y capas"
+```
+
+```{r p11-solution}
+gapminder %>% 
+  filter(year == 2000) %>% 
+    ggplot() +
+    aes(x = fertility, y = life_expectancy, color = continent) +
+    geom_point(size = 2) +
+    facet_grid(continent ~ year) +
+    theme_bw() +
+    ggtitle("Fertilidad y esperanza de vida por continente durante el año 2000") +
+    xlab("Fertilidad") +
+    ylab("Esperanza de vida") +
+    scale_color_discrete(name = "Continentes")
+```
+
+```{r p11-check}
+grade_code()
+```
